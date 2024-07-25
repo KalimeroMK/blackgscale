@@ -1,0 +1,61 @@
+services:
+    app:
+        build:
+            context: docker
+            dockerfile: Dockerfile
+        working_dir: /var/www/
+        container_name: blackscale_app
+        restart: unless-stopped
+        volumes:
+            - ./:/var/www
+            - ./docker/php/conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+            - ./docker/php/conf.d/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+            - ./docker/supervisor/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+        networks:
+            - blackscale
+
+    db:
+        image: mariadb:latest
+        container_name: blackscale_mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: homestead
+            MYSQL_USER: homestead
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        ports:
+            - "3311:3306"
+        volumes:
+            - ./docker/dbdata:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - blackscale
+
+    redis:
+        image: redis:latest
+        container_name: blackscale_redis
+        restart: unless-stopped
+        ports:
+            - "6370:6379"
+        volumes:
+            - ./docker/redis:/data
+        networks:
+            - blackscale
+
+    nginx:
+        image: nginx:latest
+        container_name: blackscale_nginx
+        restart: unless-stopped
+        ports:
+            - "96:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx:/etc/nginx/conf.d
+        networks:
+            - blackscale
+
+networks:
+    blackscale:
+        driver: bridge
