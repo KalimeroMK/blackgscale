@@ -2,16 +2,19 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "2captcha/2captcha": "^1.2",
         "google/apiclient": "^2.17",
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^11.9",
         "laravel/horizon": "^5.26",
         "laravel/tinker": "^2.9",
-        "mailgun/mailgun-php": "^4.2",
         "symfony/dom-crawler": "^7.1"
     },
     "require-dev": {
