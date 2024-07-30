@@ -16,22 +16,26 @@ RUN apt-get update && apt-get install -y \
     xdg-utils \
     supervisor
 
-# Configure & install gd extension with jpeg support
+# Configure and install the GD extension with JPEG support.
 RUN docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install gd
 
+# Install PHP extensions: PDO MySQL, Mbstring, Exif, PCNTL, BCMath, Zip.
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath zip \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl
-# Install Redis extension via pecl
+
+# Install Redis extension via PECL (PHP Extension Community Library) and enable it.
 RUN pecl install redis && docker-php-ext-enable redis
-# Clear cache
+
+# Clear the package cache to reduce the image size.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Get latest Composer
+# Copy the Composer binary from the official Composer image to the current image.
 COPY --from=composer:2.5.8 /usr/bin/composer /usr/bin/composer
-# Create system user
+
+# Modify the www-data user and group to have a UID and GID of 1000 to match common host user IDs.
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
-# Set working directory
+# Set the working directory to /var/www, where the application code will reside.
 WORKDIR /var/www

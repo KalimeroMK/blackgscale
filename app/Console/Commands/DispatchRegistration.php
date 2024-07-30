@@ -22,7 +22,7 @@ class DispatchRegistration extends Command
     /**
      * Handle the command execution.
      */
-    public function handle()
+    public function handle(): void
     {
         $client = $this->initializeHttpClient(); // Initialize HTTP client
 
