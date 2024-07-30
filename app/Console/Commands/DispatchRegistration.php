@@ -260,7 +260,7 @@ class DispatchRegistration extends Command
      */
     private function solveRecaptcha(string $siteKey, string $url): ?string
     {
-        $apiKey = 'YOUR_2CAPTCHA_API_KEY'; // Replace with your 2Captcha API key
+        $apiKey = '649fc7b29117067bd040660df0528d37'; // Replace with your 2Captcha API key
         $solver = new TwoCaptcha($apiKey);
 
         try {
